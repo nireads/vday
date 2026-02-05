@@ -332,11 +332,6 @@
         </div>
     </div>
 
-    <!-- Background music -->
-    <audio id="romanticSong" loop>
-        <source src="romantic-song.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
 
     <script>
         let musicPlayed = false;
@@ -349,15 +344,6 @@
             const page2 = document.getElementById('page2');
             page2.classList.add('active');
             
-            // Play music (only once)
-            if (!musicPlayed) {
-                const audio = document.getElementById('romanticSong');
-                audio.play().catch(error => {
-                    console.log('Audio playback failed:', error);
-                    // Some browsers require user interaction before playing audio
-                });
-                musicPlayed = true;
-            }
         }
 
         // Optional: Add click event to the actual image when replaced
