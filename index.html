@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine pleaseee</title>
+    <title>Be My Valentine? 💝</title>
     <style>
         * {
             margin: 0;
@@ -27,11 +27,11 @@
         /* Star garland at top */
         .star-garland {
             position: absolute;
-            top: 30px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
-            max-width: 900px;
+            width: 60%;
+            max-width: 500px;
             height: auto;
             z-index: 1;
             pointer-events: none;
@@ -39,35 +39,20 @@
 
         .star-garland img {
             width: 100%;
-            height: auto;
+            height: 100px;
+            object-fit: contain;
             display: block;
-        }
-
-        /* Placeholder for star garland */
-        .star-placeholder {
-            width: 100%;
-            height: 150px;
-            background: transparent;
-            border: 3px dashed rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            text-align: center;
-            padding: 20px;
         }
 
         /* Main content area */
         .content {
             position: relative;
             z-index: 2;
-            padding-top: 180px;
+            padding-top: 150px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px;
+            gap: 40px;
         }
 
         /* Notebook styles */
@@ -76,7 +61,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
         }
 
@@ -86,80 +71,28 @@
             cursor: pointer;
             transition: transform 0.3s ease;
             display: block;
+            object-fit: contain;
         }
 
         .notebook-image:hover {
             transform: scale(1.02);
         }
 
-        .notebook-placeholder {
-            width: 600px;
-            height: 400px;
-            background: rgba(255, 255, 255, 0.3);
-            border: 4px dashed rgba(255, 255, 255, 0.6);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 18px;
-            text-align: center;
-            padding: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .notebook-placeholder:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(1.02);
-        }
-
         /* Miffy character styles */
         .character {
             position: relative;
-            max-width: 250px;
+            max-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .character img {
             width: 100%;
+            max-width: 300px;
             height: auto;
             display: block;
-        }
-
-        .character-placeholder {
-            width: 250px;
-            height: 250px;
-            background: rgba(255, 255, 255, 0.3);
-            border: 3px dashed rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .speech-bubble {
-            position: absolute;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #FF69B4;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            white-space: nowrap;
-            animation: bounce 2s infinite;
-        }
-
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border: 15px solid transparent;
+            object-fit: contain;
         }
 
         /* First page layout */
@@ -167,24 +100,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 40px;
-        }
-
-        .page-1 .character {
-            position: relative;
-        }
-
-        .page-1 .speech-bubble {
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .page-1 .speech-bubble::after {
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-top-color: white;
+            gap: 50px;
+            width: 100%;
         }
 
         /* Second page layout */
@@ -192,6 +109,7 @@
             display: none;
             opacity: 0;
             transition: opacity 0.8s ease;
+            width: 100%;
         }
 
         .page-2.active {
@@ -200,49 +118,16 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 50px;
+            gap: 60px;
             flex-wrap: wrap;
         }
 
+        .page-2 .notebook-container {
+            flex: 0 1 auto;
+        }
+
         .page-2 .character {
-            position: relative;
-        }
-
-        .page-2 .speech-bubble {
-            top: 50%;
-            right: -280px;
-            transform: translateY(-50%);
-            white-space: normal;
-            max-width: 250px;
-        }
-
-        .page-2 .speech-bubble::after {
-            top: 50%;
-            left: -25px;
-            transform: translateY(-50%);
-            border-right-color: white;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0) translateX(-50%);
-            }
-            50% {
-                transform: translateY(-10px) translateX(-50%);
-            }
-        }
-
-        @keyframes bounceVertical {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .page-2 .speech-bubble {
-            animation: bounceVertical 2s infinite;
+            flex: 0 1 auto;
         }
 
         /* Hidden class */
@@ -251,43 +136,54 @@
         }
 
         /* Responsive design */
+        @media (max-width: 1024px) {
+            .page-2.active {
+                flex-direction: column;
+                gap: 40px;
+            }
+        }
+
         @media (max-width: 768px) {
             .content {
-                padding-top: 140px;
+                padding-top: 130px;
             }
 
-            .notebook-placeholder {
-                width: 90%;
-                height: 300px;
+            .star-garland {
+                width: 80%;
             }
 
-            .character-placeholder {
-                width: 180px;
-                height: 180px;
+            .star-garland img {
+                height: 80px;
+            }
+
+            .notebook-container {
+                max-width: 90%;
             }
 
             .character {
-                max-width: 180px;
+                max-width: 250px;
             }
 
-            .speech-bubble {
-                font-size: 14px;
-                padding: 10px 15px;
-            }
-
-            .page-2 .speech-bubble {
-                position: static;
-                transform: none;
-                margin-top: 20px;
-            }
-
-            .page-2 .speech-bubble::after {
-                display: none;
+            .character img {
+                max-width: 250px;
             }
 
             .page-2.active {
-                flex-direction: column;
                 gap: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .star-garland img {
+                height: 60px;
+            }
+
+            .character {
+                max-width: 200px;
+            }
+
+            .character img {
+                max-width: 200px;
             }
         }
     </style>
@@ -296,42 +192,31 @@
     <div class="container">
         <!-- Star garland at top -->
         <div class="star-garland">
-            <div class="star-placeholder">
-                <img src="images/star-garland.png" alt="Star Garland">
-            </div>
+            <img src="images/star-garland.png" alt="Star Garland">
         </div>
 
         <!-- Page 1: Closed notebook with Miffy -->
         <div class="content page-1" id="page1">
             <div class="notebook-container">
-                <div class="notebook-placeholder" id="notebookClosed" onclick="openNotebook()">
-                    <img src="images/notebook-closed.png" alt="Closed Notebook" class="notebook-image" id="notebookClosed" onclick="openNotebook()">
-                </div>
+                <img src="images/notebook-closed.png" alt="Closed Notebook" class="notebook-image" id="notebookClosed" onclick="openNotebook()">
             </div>
 
             <div class="character">
-                <div class="character-placeholder">
-                    <img src="images/miffy.png" alt="Miffy">
-                </div>
+                <img src="images/miffy.png" alt="Miffy">
             </div>
         </div>
 
         <!-- Page 2: Open notebook with Miffy and Snoopy -->
         <div class="content page-2" id="page2">
             <div class="notebook-container">
-                <div class="notebook-placeholder" id="notebookOpen">
-                    <img src="images/notebook-open.png" alt="Open Notebook" class="notebook-image" id="notebookOpen">
-                </div>
+                <img src="images/notebook-open.png" alt="Open Notebook" class="notebook-image" id="notebookOpen">
             </div>
 
             <div class="character">
-                <div class="character-placeholder">
-                    <img src="images/miffy-snoopy.png" alt="Miffy and Snoopy">
-                </div>
+                <img src="images/miffy-snoopy.png" alt="Miffy and Snoopy">
             </div>
         </div>
     </div>
-
 
     <script>
         let musicPlayed = false;
