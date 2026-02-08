@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pleaseeee be my valentine</title>
+    <title>Will You Be My Valentine?</title>
     <style>
         * {
             margin: 0;
@@ -12,233 +12,530 @@
         }
 
         body {
-            background-color: #FCC5CB;
+            background-color: #f5f5f5; /* Fallback color */
             min-height: 100vh;
             overflow-x: hidden;
             font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
         }
 
-        .container {
-            position: relative;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        /* Star garland at top */
-        .star-garland {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            max-width: 500px;
-            height: auto;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .star-garland img {
+        /* Carpet background container - NOT STRETCHED */
+        .carpet-container {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 100px;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .carpet-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover; /* This prevents stretching */
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Main container - thinner */
+        .main-container {
+            width: 100%;
+            max-width: 800px;
+            height: calc(100vh - 50px);
+            min-height: 550px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1; /* Above carpet */
+        }
+
+        /* Table container - thinner */
+        .table-container {
+            position: relative;
+            width: 95%;
+            height: 95%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #3c1b04, #3b1301);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(71, 32, 3, 0.4);
+            border: 2px solid #2c1407;
+        }
+
+        /* Table image */
+        .table-image {
+            width: 92%;
+            height: 92%;
             object-fit: contain;
             display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
         }
 
-        /* Main content area */
-        .content {
-            position: relative;
-            z-index: 2;
-            padding-top: 150px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-        }
-
-        /* Notebook styles */
+        /* Notebook container */
         .notebook-container {
-            position: relative;
+            position: absolute;
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 40%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            max-width: 700px;
-            width: 100%;
+            align-items: center;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Make open notebook on page 2 larger and positioned lower */
+        #page2.active .notebook-container {
+            width: 55%;
+            top: 72%;
+        }
+
+        #page2.active .notebook-image {
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
         }
 
         .notebook-image {
-            max-width: 100%;
+            width: 90%;
             height: auto;
+            display: block;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Choice buttons container */
+        .choice-container {
+            position: absolute;
+            top: 12%;
+            left: 47%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            gap: 80px;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        #page2.active .choice-container {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Choice buttons - PLAIN IMAGES */
+        .choice-button {
             cursor: pointer;
             transition: transform 0.3s ease;
-            display: block;
-            object-fit: contain;
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .notebook-image:hover {
-            transform: scale(1.02);
+        .choice-button:hover {
+            transform: scale(1.1);
         }
 
-        /* Miffy character styles */
-        .character {
-            position: relative;
-            max-width: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .character img {
-            width: 100%;
-            max-width: 300px;
+        .choice-button img {
+            width: 120px;
             height: auto;
             display: block;
-            object-fit: contain;
+            filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2));
+        }
+        
+        /* Make Yes image slightly bigger than No image */
+        #yesButton img {
+            width: 135px;
+            transform: scale(1.05);
         }
 
-        /* First page layout */
-        .page-1 {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
+        #noButton img {
+            width: 120px;
+        }
+
+        /* Hover effects */
+        #yesButton:hover img {
+            transform: scale(1.15);
+        }
+
+        #noButton:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Page styles */
+        .page {
+            position: absolute;
             width: 100%;
-        }
-
-        /* Second page layout */
-        .page-2 {
-            display: none;
+            height: 100%;
             opacity: 0;
-            transition: opacity 0.8s ease;
-            width: 100%;
-        }
-
-        .page-2.active {
+            visibility: hidden;
+            transition: opacity 0.5s ease;
             display: flex;
-            opacity: 1;
-            flex-direction: row;
-            align-items: center;
             justify-content: center;
-            gap: 60px;
-            flex-wrap: wrap;
+            align-items: center;
         }
 
-        .page-2 .notebook-container {
-            flex: 0 1 auto;
+        .page.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .page-2 .character {
-            flex: 0 1 auto;
+        /* Yes page - Happy GIF */
+        .yes-page {
+            background: #ffffff;
+            border-radius: 15px;
+            border-color: #2c1407;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(71, 32, 3, 0.4);
         }
 
-        /* Hidden class */
-        .hidden {
-            display: none !important;
+        /* No page - Sad GIF */
+        .no-page {
+            background: #ffffff;
+            border-radius: 15px;
+            border-color: #2c1407;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(71, 32, 3, 0.4);
+        }
+
+        .yes-gif,
+        .sad-gif {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 10px;
+        }
+
+        /* Close buttons */
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: #2c1407;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50%;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 11;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(61, 27, 2, 0.3);
+        }
+
+        .close-button:hover {
+            background-color: white;
+            color: #2c1407;
+            transform: scale(1.1);
+        }
+
+        /* Different close button for no page */
+        .no-page .close-button {
+            background-color: #4169E1;
+        }
+
+        .no-page .close-button:hover {
+            background-color: white;
+            color: #4169E1;
         }
 
         /* Responsive design */
-        @media (max-width: 1024px) {
-            .page-2.active {
-                flex-direction: column;
-                gap: 40px;
-            }
-        }
-
         @media (max-width: 768px) {
-            .content {
-                padding-top: 130px;
+            .main-container {
+                height: calc(100vh - 40px);
+                max-width: 95%;
+                min-height: 500px;
             }
-
-            .star-garland {
-                width: 80%;
+            
+            .table-container {
+                border-radius: 12px;
             }
-
-            .star-garland img {
-                height: 80px;
+            
+            .choice-container {
+                gap: 40px;
+                top: 25%;
             }
-
+            
+            /* Responsive for yes/no button sizes */
+            #yesButton img {
+                width: 110px;
+            }
+            
+            #noButton img {
+                width: 100px;
+            }
+            
             .notebook-container {
-                max-width: 90%;
+                width: 50%;
+                top: 65%;
             }
-
-            .character {
-                max-width: 250px;
+            
+            #page2.active .notebook-container {
+                width: 60%;
+                top: 72%;
             }
-
-            .character img {
-                max-width: 250px;
-            }
-
-            .page-2.active {
-                gap: 30px;
+            
+            .close-button {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
             }
         }
 
         @media (max-width: 480px) {
-            .star-garland img {
-                height: 60px;
+            body {
+                padding: 15px;
             }
-
-            .character {
-                max-width: 200px;
+            
+            .main-container {
+                height: calc(100vh - 30px);
+                min-height: 450px;
             }
+            
+            .table-container {
+                border-radius: 10px;
+            }
+            
+            .choice-container {
+                gap: 30px;
+                top: 20%;
+            }
+            
+            /* Responsive for yes/no button sizes */
+            #yesButton img {
+                width: 100px;
+            }
+            
+            #noButton img {
+                width: 90px;
+            }
+            
+            .notebook-container {
+                width: 60%;
+                top: 70%;
+            }
+            
+            #page2.active .notebook-container {
+                width: 65%;
+                top: 75%;
+            }
+            
+            .close-button {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+        }
 
-            .character img {
-                max-width: 200px;
+        @media (max-height: 600px) {
+            .main-container {
+                height: calc(100vh - 20px);
+                min-height: 400px;
+            }
+            
+            .choice-container {
+                top: 20%;
+                gap: 30px;
+            }
+            
+            #yesButton img {
+                width: 100px;
+            }
+            
+            #noButton img {
+                width: 90px;
+            }
+            
+            .notebook-container {
+                top: 70%;
+                width: 45%;
+            }
+            
+            #page2.active .notebook-container {
+                top: 75%;
+                width: 50%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Star garland at top -->
-        <div class="star-garland">
-            <img src="images/star-garland.png" alt="Star Garland">
-        </div>
+    <!-- Carpet background - NOT STRETCHED -->
+    <div class="carpet-container">
+        <img src="images/carpet-bg.jpg" alt="Carpet Background" class="carpet-bg">
+    </div>
 
-        <!-- Page 1: Closed notebook with Miffy -->
-        <div class="content page-1" id="page1">
-            <div class="notebook-container">
-                <img src="images/notebook-closed.png" alt="Closed Notebook" class="notebook-image" id="notebookClosed" onclick="openNotebook()">
-            </div>
-
-            <div class="character">
-                <img src="images/miffy.png" alt="Miffy">
+    <div class="main-container">
+        <!-- Page 1: Closed notebook only -->
+        <div class="table-container page active" id="page1">
+            <img src="images/table.png" alt="Wooden Table" class="table-image">
+            
+            <div class="notebook-container" id="closedNotebook">
+                <img src="images/closed-notebook.png" alt="Closed Notebook" class="notebook-image">
             </div>
         </div>
 
-        <!-- Page 2: Open notebook with Miffy and Snoopy -->
-        <div class="content page-2" id="page2">
+        <!-- Page 2: Open notebook with yes/no buttons -->
+        <div class="table-container page" id="page2">
+            <img src="images/table.png" alt="Wooden Table" class="table-image">
+            
+            <!-- Choice buttons - plain images only -->
+            <div class="choice-container">
+                <button class="choice-button" id="noButton">
+                    <img src="images/no-button.png" alt="No">
+                </button>
+                
+                <button class="choice-button" id="yesButton">
+                    <img src="images/yes-button.png" alt="Yes">
+                </button>
+            </div>
+            
             <div class="notebook-container">
-                <img src="images/notebook-open.png" alt="Open Notebook" class="notebook-image" id="notebookOpen">
+                <img src="images/open-notebook.png" alt="Open Notebook" class="notebook-image">
             </div>
+        </div>
 
-            <div class="character">
-                <img src="images/miffy-snoopy.png" alt="Miffy and Snoopy">
-            </div>
+        <!-- Page 3: Yes page - Happy GIF -->
+        <div class="table-container yes-page page" id="yesPage">
+            <button class="close-button" onclick="closeYesPage()">×</button>
+            <img src="images/happy-gif.gif" alt="Happy Valentine!" class="yes-gif">
+        </div>
+
+        <!-- Page 4: No page - Sad GIF -->
+        <div class="table-container no-page page" id="noPage">
+            <button class="close-button" onclick="closeNoPage()">×</button>
+            <img src="images/sad-gif.gif" alt="Sad Reaction" class="sad-gif">
         </div>
     </div>
 
     <script>
-        let musicPlayed = false;
+        // Get DOM elements
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const yesPage = document.getElementById('yesPage');
+        const noPage = document.getElementById('noPage');
+        const closedNotebook = document.getElementById('closedNotebook');
+        const noButton = document.getElementById('noButton');
+        const yesButton = document.getElementById('yesButton');
 
-        function openNotebook() {
-            // Hide page 1
-            document.getElementById('page1').classList.add('hidden');
-            
-            // Show page 2
-            const page2 = document.getElementById('page2');
-            page2.classList.add('active');
-            
+        // Open notebook when clicked
+        closedNotebook.addEventListener('click', function() {
+            page1.classList.remove('active');
+            setTimeout(() => {
+                page2.classList.add('active');
+            }, 300);
+        });
+
+        // Yes button opens happy gif page
+        yesButton.addEventListener('click', function() {
+            openYesPage();
+        });
+
+        // No button opens sad gif page
+        noButton.addEventListener('click', function() {
+            openNoPage();
+        });
+
+        // Open yes page function
+        function openYesPage() {
+            page2.classList.remove('active');
+            setTimeout(() => {
+                yesPage.classList.add('active');
+            }, 300);
         }
 
-        // Optional: Add click event to the actual image when replaced
-        document.addEventListener('DOMContentLoaded', function() {
-            // This will work even after images are replaced
-            const notebookClosed = document.getElementById('notebookClosed');
-            if (notebookClosed) {
-                notebookClosed.style.cursor = 'pointer';
+        // Open no page function
+        function openNoPage() {
+            page2.classList.remove('active');
+            setTimeout(() => {
+                noPage.classList.add('active');
+            }, 300);
+        }
+
+        // Close yes page function
+        function closeYesPage() {
+            yesPage.classList.remove('active');
+            setTimeout(() => {
+                page2.classList.add('active');
+            }, 300);
+        }
+
+        // Close no page function
+        function closeNoPage() {
+            noPage.classList.remove('active');
+            setTimeout(() => {
+                page2.classList.add('active');
+            }, 300);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                if (yesPage.classList.contains('active')) {
+                    closeYesPage();
+                }
+                if (noPage.classList.contains('active')) {
+                    closeNoPage();
+                }
             }
+            
+            if ((event.key === ' ' || event.key === 'Enter') && page1.classList.contains('active')) {
+                closedNotebook.click();
+                event.preventDefault();
+            }
+            
+            if ((event.key === 'y' || event.key === 'Y') && page2.classList.contains('active')) {
+                yesButton.click();
+            }
+            
+            if ((event.key === 'n' || event.key === 'N') && page2.classList.contains('active')) {
+                noButton.click();
+            }
+            
+            // Test keys
+            if (event.key === '1') resetToPage1();
+            if (event.key === '2') goToPage2();
+            if (event.key === '3') openYesPage();
+            if (event.key === '4') openNoPage();
         });
+
+        function resetToPage1() {
+            page1.classList.add('active');
+            page2.classList.remove('active');
+            yesPage.classList.remove('active');
+            noPage.classList.remove('active');
+        }
+
+        function goToPage2() {
+            page1.classList.remove('active');
+            page2.classList.add('active');
+            yesPage.classList.remove('active');
+            noPage.classList.remove('active');
+        }
     </script>
 </body>
 </html>
